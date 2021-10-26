@@ -1,6 +1,9 @@
-from scipy import misc
+from imageio import imread
 import numpy as np
 import tensorflow as tf
+if(tf.__version__.split('.')[0]=='2'):
+    import tensorflow.compat.v1 as tf
+    tf.disable_v2_behavior()
 import random
 import matplotlib.pyplot as plt
 import matplotlib as mp
@@ -83,15 +86,15 @@ itrain = -1
 itest = -1
 for iclass in range(0, nclass):
     for isample in range(0, ntrain):
-        path = '~/CIFAR10/Train/%d/Image%05d.png' % (iclass,isample)
-        im = misc.imread(path); # 28 by 28
+        path = 'C:\COMP 576/CIFAR10/Train/%d/Image%05d.png' % (iclass,isample)
+        im = imread(path); # 28 by 28
         im = im.astype(float)/255
         itrain += 1
         Train[itrain,:,:,0] = im
         LTrain[itrain,iclass] = 1 # 1-hot lable
     for isample in range(0, ntest):
-        path = '~/CIFAR10/Test/%d/Image%05d.png' % (iclass,isample)
-        im = misc.imread(path); # 28 by 28
+        path = 'C:\COMP 576/CIFAR10/Test/%d/Image%05d.png' % (iclass,isample)
+        im = imread(path); # 28 by 28
         im = im.astype(float)/255
         itest += 1
         Test[itest,:,:,0] = im
@@ -197,14 +200,14 @@ fig, bx = plt.subplots()
 bx.plot(range(len(losses_list)), losses_list, 'k', label='loss for AdamOptimizer')
 bx.legend(loc='upper right', shadow=True)
 plt.show()
-
-# Plot the filters of the first layer
-fig = plt.figure()
-for i in range(32):
-    ax = fig.add_subplot(4, 8, 1 + i)
-    ax.imshow(first_weight[:, :, 0, i], cmap='gray')
-    plt.axis('off')
-plt.show()
+#
+# # Plot the filters of the first layer
+# fig = plt.figure()
+# for i in range(32):
+#     ax = fig.add_subplot(4, 8, 1 + i)
+#     ax.imshow(first_weight[:, :, 0, i], cmap='gray')
+#     plt.axis('off')
+# plt.show()
 
 # Calculate the statistics of the activations in the convolutional layers on test images.
 print("activation1: mean %g, variance %g" % (np.mean(np.array(activation1)), np.var(np.array(activation1))))
