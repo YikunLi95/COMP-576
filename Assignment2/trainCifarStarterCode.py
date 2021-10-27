@@ -146,7 +146,7 @@ h_fc2 = tf.matmul(h_fc1_drop, W_fc2) + b_fc2
 # cross_entropy = tf.losses.sparse_softmax_cross_entropy(labels=tf_labels, logits=h_fc2)
 cross_entropy = tf.nn.softmax_cross_entropy_with_logits(labels=tf_labels, logits=h_fc2)
 cross_entropy = tf.reduce_mean(cross_entropy)
-optimizer = tf.train.AdamOptimizer(1e-3).minimize(cross_entropy)
+optimizer = tf.train.GradientDescentOptimizer(1e-3).minimize(cross_entropy)
 # correct_prediction = tf.equal(tf.argmax(h_fc2, 1), tf_labels)
 # correct_prediction = tf.cast(correct_prediction, tf.float32)
 correct_prediction = tf.equal(tf.argmax(h_fc2, 1), tf.argmax(tf_labels, 1))
@@ -192,13 +192,15 @@ sess.close()
 
 # Plot the accuracy and loss under different parameters
 fig, ax = plt.subplots()
-ax.plot(range(len(accs_list)), accs_list, 'k', label='accuracy for AdamOptimizer')
+ax.plot(range(len(accs_list)), accs_list, 'k', label='accuracy for GradientDescentOptimizer')
 ax.legend(loc='upper right', shadow=True)
+plt.savefig('GradientDescentOptimizer accuracy')
 plt.show()
 
 fig, bx = plt.subplots()
-bx.plot(range(len(losses_list)), losses_list, 'k', label='loss for AdamOptimizer')
+bx.plot(range(len(losses_list)), losses_list, 'k', label='loss for GradientDescentOptimizer')
 bx.legend(loc='upper right', shadow=True)
+plt.savefig('GradientDescentOptimizer loss')
 plt.show()
 #
 # # Plot the filters of the first layer
